@@ -16,6 +16,9 @@ NEWSPIDER_MODULE = 'search.spiders'
 
 SPLASH_URL = 'http://10.138.106.204:8050'
 
+MONGODB_URI = 'mongodb://10.138.106.204:27017'
+MONGODB_DB_NAME = 'search'
+
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 # USER_AGENT = 'search (+http://www.yourdomain.com)'
 
@@ -75,7 +78,8 @@ SPIDER_MIDDLEWARES = {
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 # ITEM_PIPELINES = {
-#    'search.pipelines.SearchPipeline': 300,
+#     # 'search.pipelines.SearchPipeline': 300,
+#     'search.pipelines.MongoDBPipeline': 403,
 # }
 
 # Enable and configure the AutoThrottle extension (disabled by default)

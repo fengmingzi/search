@@ -8,6 +8,10 @@
 from scrapy import Field, Item
 
 
+class SourceItem(Item):
+    source = Field()
+
+
 class SearchItem(Item):
     title = Field()
     text = Field()
@@ -15,3 +19,6 @@ class SearchItem(Item):
     # source = Field()
     url = Field()
     website = Field()
+
+
+
