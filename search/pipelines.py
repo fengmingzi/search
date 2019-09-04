@@ -9,9 +9,8 @@ from pymongo import MongoClient
 from scrapy import Item
 
 
-class SourcePipeline:
-    def process_item(self, item):
-        return item
+class SourcePipeline(object):
+    pass
 
 
 class MongoDBPipeline:
