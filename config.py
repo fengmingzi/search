@@ -48,7 +48,7 @@ class Config:
     DEBUG = True
     # sqlalchemy两个主要配置
     # ORM底层所访问数据库URI
-    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:root@0.0.0.1:3306/world?charset=utf8'
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:SearchCenter123@10.138.228.199:32430/search_center?charset=utf8'
     # 当关闭数据库是否自动提交事务
     SQLALCHEMY_COMMIT_ON_TEARDOWN = True
     # 是否追踪修改
@@ -64,20 +64,21 @@ class Config:
 class DevelopmentConfig(Config):
     """开发环境配置"""
     # 可以通过修改SQLALCHEMY_DATABASE_URI来控制访问不同数据库
-    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:root@127.0.0.1:3306/world?charset=utf8'
+    # SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:root@127.0.0.1:3306/world?charset=utf8'
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:SearchCenter123@10.138.228.199:32430/search_center'
 
 
 class TestConfig(Config):
     """测试环境配置"""
 
     # 可以通过修改SQLALCHEMY_DATABASE_URI来控制访问不同数据库
-    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:root@127.0.0.1:3306/world?charset=utf8'
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:SearchCenter123@10.138.228.199:32430/search_center?charset=utf8'
 
 
 class ProductionConfig(Config):
     """生产环境"""
     # 可以通过修改SQLALCHEMY_DATABASE_URI来控制访问不同数据库
-    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:root@127.0.0.1:3306/world?charset=utf8'
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:SearchCenter123@10.138.228.199:32430/search_center?charset=utf8'
 
 
 # 设置配置映射
