@@ -14,8 +14,11 @@ class SourceItem(Item):
 
 class SearchItem(Item):
     title = Field()
-    text = Field()
-    # datetime = Field()
+    content = Field()
+    tenantId = Field()
+    indexName = Field()
+    dataAnnotation = Field()
+    createDate = Field()
     # source = Field()
     url = Field()
     website = Field()

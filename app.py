@@ -22,16 +22,6 @@ from src.com.cosmoplat.api import usersService
 from src.com.cosmoplat.api import tenantRulesService
 
 
-@klein.route('/getUser')
-def getname(request):
-    userList = usersService.getUser('jj')
-    print(userList)
-    result = []
-    for user in userList:
-        result.append(user.to_json())
-    return json.dumps(result, ensure_ascii=False, indent=4)
-
-
 @klein.route('/getRules')
 def getRules(request):
     tenantRules = tenantRulesService.findAll()
@@ -43,7 +33,7 @@ def getRules(request):
     return json.dumps(result, ensure_ascii=False, indent=4)
 
 
-@app.route('/start')
+@klein.route('/start')
 def start():
     # name = sys.argv[1] # json配置文件的名称
     # name = 'searchRule'
@@ -59,7 +49,7 @@ def start():
     return ""
 
 
-@app.route("/spiders")
+@klein.route("/spiders")
 def spiderStart(request):
     ruleConfig = 'searchRule'
     custom_settings = get_config(ruleConfig)
@@ -71,11 +61,17 @@ def spiderStart(request):
     tenantRules = tenantRulesService.findAll()
     print(tenantRules)
     for tenantRule in tenantRules:
-
-        pam = {'ruleConfig': ruleConfig, 'pageType': tenantRule.next_page_type, 'pageTotal': tenantRule.total_page,
-               'detailUrlXpaths': tenantRule.detail_page_url_xpath, 'pageXpaths': tenantRule.next_page_xpath,
-               #  TODO 参数未配完
-               }
+        pamJson = {'ruleConfig': ruleConfig,    # 规则配置文件名称
+                   'tenantId': tenantRule.tenant_id,  # 租户id
+                   'indexName': tenantRule.index_name,  # 索引名称
+                   'dataAnnotation': tenantRule.dictionary_data_annotation,  # 数据标注
+                   'startUrl': tenantRule.list_url,  # 入口url
+                   'detailUrlXpaths': tenantRule.detail_page_url_xpath,  # 详情页url的xpath
+                   'pageType': tenantRule.dictionary_next_page_type,    # 下一页类型
+                   'pageXpaths': tenantRule.next_page_xpath,    # 下一页需要的参数json，根据类型json不同，详见实体类
+                   'title': tenantRule.detail_title_xpath,  # 详情页标题xpath
+                   'content': tenantRule.detail_content_xpath   # 详情页内容xpath
+                   }
         # self.pageType = 1  # 翻页类型，根据分页类型判断使用翻页方式
         # self.pageTotal = 4  # 总页数，事件点击的翻页需要配置总页数
         # self.detailUrlXpaths = '//div[@class="p-con"]/div[@class="p-box"]/ul[@class="products"]'  # 详情页链接xpath
@@ -83,9 +79,11 @@ def spiderStart(request):
         # self.selector = '.laypage_next'
         # self.attribute = 'data-page'
         # self.title = '//div[@class="pro-property"]/div[@class="pro-info"]/h2/text()'
-        # self.text = '//div[@class="pro-property"]/div[@class="pro-info"]/p/text()'
-        spider = SearchSpider(**{'ruleConfig': ruleConfig})
-        deferred = runner.crawl(spider.__class__, **{'ruleConfig': ruleConfig})
+        # self.content = '//div[@class="pro-property"]/div[@class="pro-info"]/p/text()'
+        # {"pageTotal": 4, "selector": ".laypage_next", "attribute": "data-page"}
+
+        # spider = SearchSpider(**{'ruleConfig': ruleConfig})
+        deferred = runner.crawl(SearchSpider, **pamJson)
         # deferred.addCallback(return_spider_output)
     return 'ok'
 
@@ -158,6 +156,17 @@ def convert(data):
     if isinstance(data, dict):   return dict(map(convert, data.items()))
     if isinstance(data, tuple):  return map(convert, data)
     return data
+
+
+@klein.route('/getUser')
+def getname(request):
+    userList = usersService.getUser('jj')
+    print(userList)
+    for user in userList:
+        print(user.content)
+        j = json.loads(user.content)
+        print(j.get('name'))
+    return 'ok'
 
 
 klein.run("localhost", 8080)

@@ -6,6 +6,7 @@ class User(db.Model):
     id = db.Column(db.BigInteger, primary_key=True)
     name = db.Column(db.String(50))
     age = db.Column(db.Integer)
+    content = db.Column(db.String(256))
 
     def __repr__(self):
         return '<User {}>'.format(self.name)

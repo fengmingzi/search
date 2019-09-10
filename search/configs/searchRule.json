@@ -39,7 +39,7 @@
           ]
         }
       ],
-      "text": [
+      "content": [
         {
           "method": "xpath",
           "args": [
