@@ -142,7 +142,7 @@ class SearchSpider(CrawlSpider):
             loader.add_value('dataAnnotation', self.dataAnnotation)
             # 格式化成2016-03-20 11:45:39形式
             # loader.add_value('createDate', time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
-            loader.add_value('createDate', time.localtime())
+            loader.add_value('createDate', time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
 
             # 动态获取属性配置
             for key, value in item.get('attrs').items(): #attrs是json，json——>items
@@ -150,7 +150,7 @@ class SearchSpider(CrawlSpider):
                     if extractor.get('method') == 'xpath':
                         args = extractor.get('args') #数组
                         if key == 'title':
-                            args = [self.title]
+                            args = ['normalize-space('+self.title+')']
                         elif key == 'content':
                             args = [self.content]
                         loader.add_xpath(key, *args, **{'re': extractor.get('re')})

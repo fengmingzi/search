@@ -7,7 +7,6 @@ from scrapy.utils.project import get_project_settings
 from search.myCrawler import MyCrawlerRunner, return_spider_output
 from search.spiders.searchSpider import SearchSpider
 import json
-from flask_twisted import Twisted
 import klein
 
 app = Flask(__name__)
@@ -72,19 +71,9 @@ def spiderStart(request):
                    'title': tenantRule.detail_title_xpath,  # 详情页标题xpath
                    'content': tenantRule.detail_content_xpath   # 详情页内容xpath
                    }
-        # self.pageType = 1  # 翻页类型，根据分页类型判断使用翻页方式
-        # self.pageTotal = 4  # 总页数，事件点击的翻页需要配置总页数
-        # self.detailUrlXpaths = '//div[@class="p-con"]/div[@class="p-box"]/ul[@class="products"]'  # 详情页链接xpath
-        # self.pageXpaths = '//div[@id="pageStyle"]//a[contains(., "下一页")]'
-        # self.selector = '.laypage_next'
-        # self.attribute = 'data-page'
-        # self.title = '//div[@class="pro-property"]/div[@class="pro-info"]/h2/text()'
-        # self.content = '//div[@class="pro-property"]/div[@class="pro-info"]/p/text()'
-        # {"pageTotal": 4, "selector": ".laypage_next", "attribute": "data-page"}
 
-        # spider = SearchSpider(**{'ruleConfig': ruleConfig})
         deferred = runner.crawl(SearchSpider, **pamJson)
-        # deferred.addCallback(return_spider_output)
+        deferred.addCallback(return_spider_output)
     return 'ok'
 
 
@@ -169,6 +158,6 @@ def getname(request):
     return 'ok'
 
 
-klein.run("localhost", 8080)
+klein.run("0.0.0.0", 8080)
 if __name__ == '__main__':
     app.run()

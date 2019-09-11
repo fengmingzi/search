@@ -31,5 +31,10 @@ class MongoDBPipeline:
     def insert_db(self, item):
         if isinstance(item, Item):
             item = dict(item)
+        collection = self.db['search_tenant_'+str(item['tenantId'])]
+        collection.update({'url': item['url'], 'title': item['title']}, {'$set': item}, True)
+        # TODO
 
-        self.db.cosmoplat_search.insert_one(item)
+
+
+        # self.db.cosmoplat_search.insert_one(item)
